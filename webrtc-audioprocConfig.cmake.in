@@ -1,0 +1,9 @@
+set(FOO_VERSION master)
+
+@PACKAGE_INIT@
+
+set_and_check(libwebrtc-audioproc_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
+find_library(libwebrtc-audioproc_LIBRARIES webrtc-audioproc HINTS "@PACKAGE_LIB_INSTALL_DIR@")
+set(libwebrtc-audioproc_DEFINITIONS "@DEFINITIONS@")
+
+check_required_components(libwebrtc-audioproc)
