@@ -16,7 +16,6 @@ include_directories(
 )
 
 set(WEBRTC_SRC_
-    base/buffer.cc
     base/checks.cc
     base/criticalsection.cc
     base/event.cc
@@ -88,49 +87,15 @@ set(WEBRTC_SRC_
     common_audio/wav_header.cc
     common_audio/window_generator.cc
     common_types.cc
-    modules/audio_coding/codecs/audio_decoder.cc
-    modules/audio_coding/codecs/audio_encoder.cc
-    modules/audio_coding/codecs/isac/locked_bandwidth_info.cc
-    modules/audio_coding/codecs/isac/main/source/arith_routines.c
-    modules/audio_coding/codecs/isac/main/source/arith_routines_hist.c
-    modules/audio_coding/codecs/isac/main/source/arith_routines_logist.c
-    modules/audio_coding/codecs/isac/main/source/audio_decoder_isac.cc
-    modules/audio_coding/codecs/isac/main/source/audio_encoder_isac.cc
-    modules/audio_coding/codecs/isac/main/source/bandwidth_estimator.c
-    modules/audio_coding/codecs/isac/main/source/crc.c
-    modules/audio_coding/codecs/isac/main/source/decode_bwe.c
-    modules/audio_coding/codecs/isac/main/source/decode.c
-    modules/audio_coding/codecs/isac/main/source/encode.c
-    modules/audio_coding/codecs/isac/main/source/encode_lpc_swb.c
-    modules/audio_coding/codecs/isac/main/source/entropy_coding.c
-    modules/audio_coding/codecs/isac/main/source/fft.c
-    modules/audio_coding/codecs/isac/main/source/filterbanks.c
-    modules/audio_coding/codecs/isac/main/source/filterbank_tables.c
-    modules/audio_coding/codecs/isac/main/source/filter_functions.c
-    modules/audio_coding/codecs/isac/main/source/intialize.c
-    modules/audio_coding/codecs/isac/main/source/isac.c
-    modules/audio_coding/codecs/isac/main/source/lattice.c
-    modules/audio_coding/codecs/isac/main/source/lpc_analysis.c
-    modules/audio_coding/codecs/isac/main/source/lpc_gain_swb_tables.c
-    modules/audio_coding/codecs/isac/main/source/lpc_shape_swb12_tables.c
-    modules/audio_coding/codecs/isac/main/source/lpc_shape_swb16_tables.c
-    modules/audio_coding/codecs/isac/main/source/lpc_tables.c
-    modules/audio_coding/codecs/isac/main/source/pitch_estimator.c
-    modules/audio_coding/codecs/isac/main/source/pitch_filter.c
-    modules/audio_coding/codecs/isac/main/source/pitch_gain_tables.c
-    modules/audio_coding/codecs/isac/main/source/pitch_lag_tables.c
-    modules/audio_coding/codecs/isac/main/source/spectrum_ar_model_tables.c
-    modules/audio_coding/codecs/isac/main/source/transform.c
     modules/audio_processing/aec/aec_core.cc
     modules/audio_processing/aec/aec_core.h
     modules/audio_processing/aec/aec_core_optimized_methods.h
-    modules/audio_processing/aec/aec_rdft.cc
-    modules/audio_processing/aec/aec_rdft.h
     modules/audio_processing/aec/aec_resampler.cc
     modules/audio_processing/aec/aec_resampler.h
     modules/audio_processing/aec/echo_cancellation.cc
     modules/audio_processing/aec/echo_cancellation.h
     modules/audio_processing/aecm/aecm_core.cc
+    modules/audio_processing/aecm/aecm_core_c.cc
     modules/audio_processing/aecm/aecm_core.h
     modules/audio_processing/aecm/echo_control_mobile.cc
     modules/audio_processing/aecm/echo_control_mobile.h
@@ -139,18 +104,17 @@ set(WEBRTC_SRC_
     modules/audio_processing/agc/agc_manager_direct.cc
     modules/audio_processing/agc/agc_manager_direct.h
     modules/audio_processing/agc/gain_map_internal.h
-    modules/audio_processing/agc/loudness_histogram.cc
-    modules/audio_processing/agc/loudness_histogram.h
     modules/audio_processing/agc/legacy/analog_agc.c
     modules/audio_processing/agc/legacy/analog_agc.h
     modules/audio_processing/agc/legacy/digital_agc.c
     modules/audio_processing/agc/legacy/digital_agc.h
     modules/audio_processing/agc/legacy/gain_control.h
+    modules/audio_processing/agc/loudness_histogram.cc
+    modules/audio_processing/agc/loudness_histogram.h
     modules/audio_processing/agc/utility.cc
     modules/audio_processing/agc/utility.h
     modules/audio_processing/audio_buffer.cc
     modules/audio_processing/audio_buffer.h
-    modules/audio_processing/audio_processing.cc
     modules/audio_processing/audio_processing_impl.cc
     modules/audio_processing/audio_processing_impl.h
     modules/audio_processing/beamformer/array_util.cc
@@ -166,12 +130,17 @@ set(WEBRTC_SRC_
     modules/audio_processing/echo_cancellation_impl.h
     modules/audio_processing/echo_control_mobile_impl.cc
     modules/audio_processing/echo_control_mobile_impl.h
+    modules/audio_processing/echo_detector/circular_buffer.cc
+    modules/audio_processing/echo_detector/circular_buffer.h
+    modules/audio_processing/echo_detector/mean_variance_estimator.cc
+    modules/audio_processing/echo_detector/mean_variance_estimator.h
+    modules/audio_processing/echo_detector/normalized_covariance_estimator.cc
+    modules/audio_processing/echo_detector/normalized_covariance_estimator.h
     modules/audio_processing/gain_control_for_experimental_agc.cc
     modules/audio_processing/gain_control_for_experimental_agc.h
     modules/audio_processing/gain_control_impl.cc
     modules/audio_processing/gain_control_impl.h
-    modules/audio_processing/high_pass_filter_impl.cc
-    modules/audio_processing/high_pass_filter_impl.h
+    modules/audio_processing/include/audio_processing.cc
     modules/audio_processing/include/audio_processing.h
     modules/audio_processing/include/config.cc
     modules/audio_processing/include/config.h
@@ -183,13 +152,13 @@ set(WEBRTC_SRC_
     modules/audio_processing/level_controller/gain_applier.h
     modules/audio_processing/level_controller/gain_selector.cc
     modules/audio_processing/level_controller/gain_selector.h
-    modules/audio_processing/level_controller/lc_constants.h
     modules/audio_processing/level_controller/level_controller.cc
     modules/audio_processing/level_controller/level_controller.h
-    modules/audio_processing/level_controller/noise_spectrum_estimator.cc
-    modules/audio_processing/level_controller/noise_spectrum_estimator.h
+    modules/audio_processing/level_controller/level_controller_constants.h
     modules/audio_processing/level_controller/noise_level_estimator.cc
     modules/audio_processing/level_controller/noise_level_estimator.h
+    modules/audio_processing/level_controller/noise_spectrum_estimator.cc
+    modules/audio_processing/level_controller/noise_spectrum_estimator.h
     modules/audio_processing/level_controller/peak_level_estimator.cc
     modules/audio_processing/level_controller/peak_level_estimator.h
     modules/audio_processing/level_controller/saturating_gain_estimator.cc
@@ -200,9 +169,13 @@ set(WEBRTC_SRC_
     modules/audio_processing/level_estimator_impl.h
     modules/audio_processing/logging/apm_data_dumper.cc
     modules/audio_processing/logging/apm_data_dumper.h
+    modules/audio_processing/low_cut_filter.cc
+    modules/audio_processing/low_cut_filter.h
     modules/audio_processing/noise_suppression_impl.cc
     modules/audio_processing/noise_suppression_impl.h
     modules/audio_processing/render_queue_item_verifier.h
+    modules/audio_processing/residual_echo_detector.cc
+    modules/audio_processing/residual_echo_detector.h
     modules/audio_processing/rms_level.cc
     modules/audio_processing/rms_level.h
     modules/audio_processing/splitting_filter.cc
@@ -231,6 +204,9 @@ set(WEBRTC_SRC_
     modules/audio_processing/utility/delay_estimator_internal.h
     modules/audio_processing/utility/delay_estimator_wrapper.cc
     modules/audio_processing/utility/delay_estimator_wrapper.h
+    modules/audio_processing/utility/ooura_fft.cc
+    modules/audio_processing/utility/ooura_fft.h
+    modules/audio_processing/utility/ooura_fft_tables_common.h
     modules/audio_processing/vad/common.h
     modules/audio_processing/vad/gmm.cc
     modules/audio_processing/vad/gmm.h
@@ -253,15 +229,15 @@ set(WEBRTC_SRC_
     modules/audio_processing/vad/voice_gmm_tables.h
     modules/audio_processing/voice_detection_impl.cc
     modules/audio_processing/voice_detection_impl.h
-    modules/audio_processing/aec/aec_core_sse2.cc
-    modules/audio_processing/aec/aec_rdft_sse2.cc
     modules/audio_processing/ns/defines.h
-    modules/audio_processing/ns/noise_suppression.h
     modules/audio_processing/ns/noise_suppression.c
+    modules/audio_processing/ns/noise_suppression.h
     modules/audio_processing/ns/ns_core.c
     modules/audio_processing/ns/ns_core.h
     modules/audio_processing/ns/windows_private.h
-    modules/audio_processing/aecm/aecm_core_c.cc
+    modules/audio_processing/aec/aec_core_sse2.cc
+    modules/audio_processing/utility/ooura_fft_sse2.cc
+    modules/audio_processing/utility/ooura_fft_tables_neon_sse2.h
     system_wrappers/source/aligned_malloc.cc
     system_wrappers/source/cpu_features.cc
     system_wrappers/source/file_impl.cc
@@ -271,6 +247,13 @@ set(WEBRTC_SRC_
     system_wrappers/source/rw_lock_posix.cc
     system_wrappers/source/trace_impl.cc
     system_wrappers/source/trace_posix.cc
+    modules/audio_coding/codecs/isac/main/source/intialize.c
+    modules/audio_coding/codecs/isac/main/source/pitch_estimator.c
+    modules/audio_coding/codecs/isac/main/source/filter_functions.c
+    modules/audio_coding/codecs/isac/main/source/filterbanks.c
+    modules/audio_coding/codecs/isac/main/source/filterbank_tables.c
+    modules/audio_coding/codecs/isac/main/source/pitch_filter.c
+    modules/audio_coding/codecs/isac/main/source/lpc_analysis.c
 )
 
 
@@ -278,7 +261,6 @@ set(WEBRTC_INCLUDE_
     call.h
     common_types.h
     config.h
-    engine_configurations.h
     transport.h
     typedefs.h
     video_decoder.h
@@ -286,7 +268,6 @@ set(WEBRTC_INCLUDE_
     video_frame.h
     video_receive_stream.h
     video_send_stream.h
-    base/worker.h
     base/win32.h
     base/socketfactory.h
     base/crc32.h
@@ -294,7 +275,6 @@ set(WEBRTC_INCLUDE_
     base/ratetracker.h
     base/sslconfig.h
     base/platform_thread.h
-    base/dbus.h
     base/win32socketserver.h
     base/sha1.h
     base/faketaskrunner.h
@@ -308,9 +288,7 @@ set(WEBRTC_INCLUDE_
     base/location.h
     base/scoped_autorelease_pool.h
     base/basictypes.h
-    base/maccocoasocketserver.h
-    base/win32windowpicker.h
-    base/timing.h
+    base/ignore_wundef.h
     base/nullsocketserver.h
     base/constructormagic.h
     base/trace_event.h
@@ -331,10 +309,8 @@ set(WEBRTC_INCLUDE_
     base/proxydetect.h
     base/autodetectproxy.h
     base/macconversion.h
-    base/profiler.h
     base/dscp.h
     base/scoped_ref_ptr.h
-    base/sec_buffer.h
     base/stringutils.h
     base/sanitizer.h
     base/array_view.h
@@ -353,7 +329,6 @@ set(WEBRTC_INCLUDE_
     base/messagequeue.h
     base/md5digest.h
     base/optionsfile.h
-    base/windowpicker.h
     base/testbase64.h
     base/bind.h
     base/win32regkey.h
@@ -369,25 +344,20 @@ set(WEBRTC_INCLUDE_
     base/logging.h
     base/socketpool.h
     base/sslfingerprint.h
+    base/weak_ptr.h
     base/systeminfo.h
     base/rtccertificate.h
     base/asynctcpsocket.h
-    base/linuxfdwalk.h
-    base/referencecountedsingletonfactory.h
     base/maccocoathreadhelper.h
     base/sslidentity.h
     base/rollingaccumulator.h
-    base/linux.h
     base/linked_ptr.h
-    base/multipart.h
     base/deprecation.h
     base/socketstream.h
     base/json.h
-    base/versionparsing.h
     base/fakeclock.h
     base/socket_unittest.h
     base/refcount.h
-    base/bandwidthsmoother.h
     base/sequenced_task_checker_impl.h
     base/cryptstring.h
     base/asyncinvoker-inl.h
@@ -395,30 +365,26 @@ set(WEBRTC_INCLUDE_
     base/proxyinfo.h
     base/fakesslidentity.h
     base/rate_limiter.h
-    base/windowpickerfactory.h
     base/safe_conversions_impl.h
     base/timestampaligner.h
     base/messagedigest.h
-    base/macasyncsocket.h
     base/ipaddress.h
     base/openssl.h
     base/onetimeevent.h
     base/callback.h
-    base/macwindowpicker.h
     base/transformadapter.h
     base/fileutils_mock.h
     base/opensslstreamadapter.h
-    base/x11windowpicker.h
     base/event.h
     base/platform_thread_types.h
     base/criticalsection.h
-    base/macsocketserver.h
     base/task_queue.h
     base/opensslidentity.h
     base/sslsocketfactory.h
     base/base64.h
     base/sharedexclusivelock.h
     base/rate_statistics.h
+    base/analytics/exp_filter.h
     base/testclient.h
     base/httpbase.h
     base/sigslottester.h
@@ -427,14 +393,13 @@ set(WEBRTC_INCLUDE_
     base/asyncpacketsocket.h
     base/httpcommon-inl.h
     base/taskrunner.h
-    base/posix.h
-    base/test/faketiming.h
     base/win32filesystem.h
     base/bytebuffer.h
     base/networkroute.h
     base/network.h
     base/nattypes.h
     base/timedelta.h
+    base/safe_compare.h
     base/asyncfile.h
     base/asyncudpsocket.h
     base/task.h
@@ -455,8 +420,8 @@ set(WEBRTC_INCLUDE_
     base/thread_checker_impl.h
     base/stream.h
     base/signalthread.h
-    base/winfirewall.h
     base/ifaddrs_converter.h
+    base/function_view.h
     base/helpers.h
     base/sslroots.h
     base/byteorder.h
@@ -464,12 +429,11 @@ set(WEBRTC_INCLUDE_
     base/openssldigest.h
     base/scopedptrcollection.h
     base/nethelpers.h
-    base/libdbusglibsymboltable.h
+    base/refcountedobject.h
     base/win32window.h
     base/rtccertificategenerator.h
     base/optional.h
     base/physicalsocketserver.h
-    base/httprequest.h
     base/networkmonitor.h
     base/bitbuffer.h
     base/proxyserver.h
@@ -482,9 +446,7 @@ set(WEBRTC_INCLUDE_
     base/natserver.h
     base/sigslotrepeater.h
     base/format_macros.h
-    base/exp_filter.h
     base/keep_ref_until_done.h
-    base/latebindingsymboltable.h
     base/template_util.h
     modules/audio_processing/ns/defines.h
     modules/audio_processing/ns/nsx_core.h
@@ -510,12 +472,14 @@ set(WEBRTC_INCLUDE_
     modules/audio_processing/agc/gain_map_internal.h
     modules/audio_processing/agc/utility.h
     modules/audio_processing/voice_detection_impl.h
+    modules/audio_processing/utility/ooura_fft.h
+    modules/audio_processing/utility/ooura_fft_tables_neon_sse2.h
     modules/audio_processing/utility/delay_estimator_wrapper.h
+    modules/audio_processing/utility/ooura_fft_tables_common.h
     modules/audio_processing/utility/delay_estimator_internal.h
     modules/audio_processing/utility/block_mean_calculator.h
     modules/audio_processing/utility/delay_estimator.h
     modules/audio_processing/echo_cancellation_impl.h
-    modules/audio_processing/high_pass_filter_impl.h
     modules/audio_processing/typing_detection.h
     modules/audio_processing/noise_suppression_impl.h
     modules/audio_processing/transient/dyadic_decimator.h
@@ -536,17 +500,22 @@ set(WEBRTC_INCLUDE_
     modules/audio_processing/intelligibility/intelligibility_enhancer.h
     modules/audio_processing/intelligibility/intelligibility_utils.h
     modules/audio_processing/audio_buffer.h
+    modules/audio_processing/echo_detector/mean_variance_estimator.h
+    modules/audio_processing/echo_detector/normalized_covariance_estimator.h
+    modules/audio_processing/echo_detector/circular_buffer.h
     modules/audio_processing/aec/echo_cancellation.h
     modules/audio_processing/aec/aec_resampler.h
-    modules/audio_processing/aec/aec_rdft.h
     modules/audio_processing/aec/aec_common.h
     modules/audio_processing/aec/aec_core_optimized_methods.h
     modules/audio_processing/aec/aec_core.h
+    modules/audio_processing/residual_echo_detector.h
     modules/audio_processing/test/aec_dump_based_simulator.h
     modules/audio_processing/test/audio_processing_simulator.h
     modules/audio_processing/test/protobuf_utils.h
+    modules/audio_processing/test/performance_timer.h
     modules/audio_processing/test/bitexactness_tools.h
     modules/audio_processing/test/wav_based_simulator.h
+    modules/audio_processing/test/simulator_buffers.h
     modules/audio_processing/test/test_utils.h
     modules/audio_processing/test/audio_buffer_tools.h
     modules/audio_processing/test/debug_dump_replayer.h
@@ -566,12 +535,13 @@ set(WEBRTC_INCLUDE_
     modules/audio_processing/rms_level.h
     modules/audio_processing/gain_control_for_experimental_agc.h
     modules/audio_processing/gain_control_impl.h
+    modules/audio_processing/low_cut_filter.h
     modules/audio_processing/level_controller/noise_level_estimator.h
     modules/audio_processing/level_controller/biquad_filter.h
-    modules/audio_processing/level_controller/lc_constants.h
     modules/audio_processing/level_controller/saturating_gain_estimator.h
     modules/audio_processing/level_controller/down_sampler.h
     modules/audio_processing/level_controller/signal_classifier.h
+    modules/audio_processing/level_controller/level_controller_constants.h
     modules/audio_processing/level_controller/peak_level_estimator.h
     modules/audio_processing/level_controller/noise_spectrum_estimator.h
     modules/audio_processing/level_controller/gain_selector.h
@@ -608,6 +578,8 @@ set(WEBRTC_INCLUDE_
     common_audio/real_fourier.h
     common_audio/fft4g.h
     common_audio/window_generator.h
+    common_audio/mocks/mock_smoothing_filter.h
+    common_audio/smoothing_filter.h
     common_audio/vad/vad_filterbank.h
     common_audio/vad/vad_core.h
     common_audio/vad/mock/mock_vad.h
